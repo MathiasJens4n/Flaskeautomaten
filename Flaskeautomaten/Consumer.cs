@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace V2
+{
+    internal class Consumer
+    {
+        string name;
+        Cola cola = new Cola();
+        Tuborg tuborg = new Tuborg();
+        Bottle bottle = new Bottle();
+        Program program = new Program();
+        private string returnText;
+        public void ConsumeSoda()
+        {
+            lock (bottle.Bottles)
+            {
+                while (true)
+                {
+                    name = "Soda Consumer";
+                    if (cola.Sodas.Count == 0)
+                    {
+                        Monitor.Wait(bottle.Bottles);
+                    }
+                    else
+                    {
+                        returnText = ($"Consuming sodas {cola.Sodas.Count} total");
+                        program.ConsumerInfo(returnText);
+                        Thread.Sleep(2000);
+
+                        foreach (var cola in cola.Sodas)
+                        {
+                            returnText = ($"{name} has consumed: {cola.Name}");
+                            program.ConsumerInfo(returnText);
+                            Thread.Sleep(500);
+
+                        }
+                        cola.Sodas.Clear();
+                        Monitor.PulseAll(bottle.Bottles);
+                    }
+                }
+            }
+        }
+        public void ConsumeBeer()
+        {
+            lock (bottle.Bottles)
+            {
+                while (true)
+                {
+                    name = "Beer Consumer";
+                    if (tuborg.Beers.Count == 0)
+                    {
+                        Monitor.Wait(bottle.Bottles);
+                    }
+                    else
+                    {
+                        returnText = ($"Consuming beers {tuborg.Beers.Count} total");
+                        program.ConsumerInfo(returnText);
+                        Thread.Sleep(2000);
+
+                        foreach (var tuborg in tuborg.Beers)
+                        {
+                            returnText = ($"{name} has consumed: {tuborg.Name}");
+                            program.ConsumerInfo(returnText);
+                            Thread.Sleep(500);
+                        }
+                        tuborg.Beers.Clear();
+                        Monitor.PulseAll(bottle.Bottles);
+                    }
+                }
+            }
+        }
+    }
+}
