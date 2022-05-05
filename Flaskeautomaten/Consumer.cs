@@ -17,8 +17,7 @@ namespace V2
         private string returnText;
         public void ConsumeSoda()
         {
-            name = "Soda Consumer";
-            lock (bottle)
+            lock (bottle.Bottles)
             {
                 while (true)
                 {
@@ -29,6 +28,7 @@ namespace V2
                     }
                     else
                     {//Returning total sodas in queue, and prints each object in the soda queue, and clears the queue afterwards
+                        name = "Soda Consumer";
                         returnText = ($"Consuming sodas {cola.Sodas.Count} total");
                         program.ConsumerInfo(returnText);
                         Thread.Sleep(2000);
@@ -48,7 +48,6 @@ namespace V2
         }
         public void ConsumeBeer()
         {
-            name = "Beer Consumer";
             lock (bottle.Bottles)
             {
                 while (true)
@@ -60,7 +59,8 @@ namespace V2
                     }
                     else
                     {//Returning total beers in queue, and prints each object in the beer queue, and clears the queue afterwards
-                            returnText = ($"Consuming beers {tuborg.Beers.Count} total");
+                        name = "Beer Consumer";
+                        returnText = ($"Consuming beers {tuborg.Beers.Count} total");
                         program.ConsumerInfo(returnText);
                         Thread.Sleep(2000);
 
