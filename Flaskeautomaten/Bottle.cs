@@ -22,18 +22,17 @@ namespace V2
         }
         public void ProduceBottle()
         {
-           
             lock (bottles)
             {
                 while (true)
                 {
-                    //Console.WriteLine("#########" + Thread.CurrentThread.ManagedThreadId);
+                    //Waits if queue is bigger man max queue length
                     if (bottles.Count >= maxQueueLenght)
                     {
                         Monitor.Wait(bottles);
                     }
                     else
-                    {
+                    {//Either creates a tuborg or a cola depending on the random roll
                         if (rnd.Next(1, 3) == 1)
                         {
                             bottles.Enqueue(new Tuborg { Name = "Tuborg" + number });
@@ -42,9 +41,11 @@ namespace V2
                         {
                             bottles.Enqueue(new Cola { Name = "Cola" + number });
                         }
+                        //Increment each time an object is created to control object number
                         number++;
                     }
                     Monitor.PulseAll(bottles);
+
                     Thread.Sleep(100 / 15);
                 }
             }

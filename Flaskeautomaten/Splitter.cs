@@ -17,12 +17,13 @@ namespace V2
             {
                 while (true)
                 {
+                    //Waits if bottle queue is empty
                     if (bottle.Bottles.Count == 0)
                     {
                         Monitor.Wait(bottle.Bottles);
                     }
                     else
-                    {
+                    {//Splitting the objects from the bottle queue, and sorting them to the soda and beer queue, and clears the bottle queue afterwards
                         foreach (var bottle in bottle.Bottles)
                         {
                             if (bottle.Name.Contains("Cola"))

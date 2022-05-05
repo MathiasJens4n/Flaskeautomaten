@@ -17,17 +17,18 @@ namespace V2
         private string returnText;
         public void ConsumeSoda()
         {
-            lock (bottle.Bottles)
+            name = "Soda Consumer";
+            lock (bottle)
             {
                 while (true)
                 {
-                    name = "Soda Consumer";
+                    //Waits if soda queue is empty
                     if (cola.Sodas.Count == 0)
                     {
                         Monitor.Wait(bottle.Bottles);
                     }
                     else
-                    {
+                    {//Returning total sodas in queue, and prints each object in the soda queue, and clears the queue afterwards
                         returnText = ($"Consuming sodas {cola.Sodas.Count} total");
                         program.ConsumerInfo(returnText);
                         Thread.Sleep(2000);
@@ -47,18 +48,19 @@ namespace V2
         }
         public void ConsumeBeer()
         {
+            name = "Beer Consumer";
             lock (bottle.Bottles)
             {
                 while (true)
                 {
-                    name = "Beer Consumer";
+                    //Waits if beer queue is empty
                     if (tuborg.Beers.Count == 0)
                     {
                         Monitor.Wait(bottle.Bottles);
                     }
                     else
-                    {
-                        returnText = ($"Consuming beers {tuborg.Beers.Count} total");
+                    {//Returning total beers in queue, and prints each object in the beer queue, and clears the queue afterwards
+                            returnText = ($"Consuming beers {tuborg.Beers.Count} total");
                         program.ConsumerInfo(returnText);
                         Thread.Sleep(2000);
 
